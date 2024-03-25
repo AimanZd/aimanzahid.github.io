@@ -1,29 +1,17 @@
 <?php
-
+// Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $receiving_email_address = 'aimanzahid02@gmail.com';
+    // Validate form data (you can add validation logic here if needed)
 
-    // Sanitize input data
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $subject = htmlspecialchars($_POST['subject']);
-    $message = htmlspecialchars($_POST['message']);
+    // Set the location of the Thank You page
+    $thank_you_page = "thanks.html"; // Adjust the URL if needed
 
-    // Compose email body
-    $email_body = "Name: $name\n";
-    $email_body .= "Email: $email\n";
-    $email_body .= "Subject: $subject\n\n";
-    $email_body .= "Message:\n$message";
-
-    // Send email using mail() function
-    $success = mail($receiving_email_address, $subject, $email_body);
-
-    if ($success) {
-        echo "OK"; // Return OK if email is sent successfully
-    } else {
-        echo "Error"; // Return Error if there is an issue with sending email
-    }
+    // Redirect to the Thank You page
+    header("Location: $thank_you_page");
+    exit; // Ensure that no further code is executed after redirection
 } else {
-    echo "Method Not Allowed"; // Return Method Not Allowed if form is not submitted using POST method
+    // If the form wasn't submitted via POST request, redirect users back to the form page
+    header("Location: index.html"); // Adjust the URL if needed
+    exit;
 }
 ?>
