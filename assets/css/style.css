@@ -225,7 +225,7 @@ h6 {
   height: 100vh;
   background: url("../img/bg.png") top center;
   background-size: cover;
-  animation: slide 20s linear infinite;
+  animation: slide 10s linear infinite;
 }
 #hero:before {
   content: "";
