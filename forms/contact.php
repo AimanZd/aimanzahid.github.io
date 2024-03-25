@@ -1,34 +1,29 @@
 <?php
 
-  $receiving_email_address = 'aimanzahid02@gmail.com';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $receiving_email_address = 'aimanzahid02@gmail.com';
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
-    include( $php_email_form );
-  } else {
-    die( 'Unable to load the "PHP Email Form" Library!');
-  }
+    // Sanitize input data
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $subject = htmlspecialchars($_POST['subject']);
+    $message = htmlspecialchars($_POST['message']);
 
-  $contact = new PHP_Email_Form;
-  $contact->ajax = true;
-  
-  $contact->to = $receiving_email_address;
-  $contact->from_name = $_POST['name'];
-  $contact->from_email = $_POST['email'];
-  $contact->subject = $_POST['subject'];
+    // Compose email body
+    $email_body = "Name: $name\n";
+    $email_body .= "Email: $email\n";
+    $email_body .= "Subject: $subject\n\n";
+    $email_body .= "Message:\n$message";
 
-  // Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-  /*
-  $contact->smtp = array(
-    'host' => 'example.com',
-    'username' => 'example',
-    'password' => 'pass',
-    'port' => '587'
-  );
-  */
+    // Send email using mail() function
+    $success = mail($receiving_email_address, $subject, $email_body);
 
-  $contact->add_message( $_POST['name'], 'From');
-  $contact->add_message( $_POST['email'], 'Email');
-  $contact->add_message( $_POST['message'], 'Message', 10);
-
-  echo $contact->send();
+    if ($success) {
+        echo "OK"; // Return OK if email is sent successfully
+    } else {
+        echo "Error"; // Return Error if there is an issue with sending email
+    }
+} else {
+    echo "Method Not Allowed"; // Return Method Not Allowed if form is not submitted using POST method
+}
 ?>
