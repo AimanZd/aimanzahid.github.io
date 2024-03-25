@@ -18,14 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_body .= "Subject: $subject\n";
     $email_body .= "Message: $message\n";
 
-    // Prepare the headers
-    $headers = "From: $name <$email>\r\n";
-    $headers .= "Reply-To: $email\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+    // Prepare the cURL request
+    $ch = curl_init($formspree_url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $email_body);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Content-Type: text/plain;charset=utf-8",
+        "From: $name <$email>",
+        "Reply-To: $email"
+    ));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    // Send the email using Formspree
-    $result = mail($formspree_url, $subject, $email_body, $headers);
+    // Execute the cURL request
+    $result = curl_exec($ch);
 
     // Check if the email was sent successfully
     if ($result) {
@@ -36,6 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Handle the error (you can add error handling code here if needed)
         echo "An error occurred. Please try again later.";
     }
+
+    // Close cURL session
+    curl_close($ch);
 } else {
     // If the form wasn't submitted via POST request, redirect users back to the form page
     header("Location: index.html");
