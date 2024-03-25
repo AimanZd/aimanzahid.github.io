@@ -520,10 +520,10 @@
                   })
                   .then(data => {
                     thisForm.querySelector('.loading').classList.remove('d-block');
-                    if (data.trim() == 'OK') {
+                    if (data.trim() === 'OK') {
                       thisForm.querySelector('.sent-message').classList.add('d-block');
                       thisForm.reset();
-                      window.location.href = '/thanks.html'; // Redirect to thank you page
+                      // Optionally, you can redirect the user to a thank you page here
                     } else {
                       throw new Error(data ? data : 'Form submission failed and no error message returned from: ' + action);
                     }
@@ -540,6 +540,7 @@
         form.querySelector('.error-message').classList.add('d-block');
       }
     })();
+
   </script>
 
   <script src="assets/js/main.js"></script>
