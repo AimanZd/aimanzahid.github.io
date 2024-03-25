@@ -484,6 +484,7 @@
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script>
+
     (function() {
       "use strict";
 
@@ -519,11 +520,11 @@
                     }
                   })
                   .then(data => {
-                    thisForm.querySelector('.loading').classList.remove('d-block');
                     if (data.trim() === 'OK') {
+                      // Display success message
                       thisForm.querySelector('.sent-message').classList.add('d-block');
+                      thisForm.querySelector('.error-message').classList.remove('d-block');
                       thisForm.reset();
-                      // Optionally, you can redirect the user to a thank you page here
                     } else {
                       throw new Error(data ? data : 'Form submission failed and no error message returned from: ' + action);
                     }
@@ -540,6 +541,7 @@
         form.querySelector('.error-message').classList.add('d-block');
       }
     })();
+
 
   </script>
 
